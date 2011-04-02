@@ -569,7 +569,7 @@ class LinkedInClient(OAuthClient):
 
     # Grab the user's profile from LinkedIn.
     response = self.make_request("http://api.linkedin.com/v1/people/~:"
-                                 "(picture-url,id,first-name,last-name,educations,positions,skills,certifications,publications,honors,summary,specialties,twitter-accounts,interests,location)",
+                                 "(picture-url,id,first-name,last-name,educations,positions,skills,certifications,publications,honors,summary,specialties,twitter-accounts,interests,languages,location,phone-numbers,main-address,date-of-birth,headline,industry,associations,member-url-resources,public-profile-url,patents)",
                                  token=access_token,
                                  secret=access_secret,
                                  protected=False,
@@ -577,8 +577,8 @@ class LinkedInClient(OAuthClient):
 
     data = json.loads(response.content)
     user_info = self._get_default_user_info()
-    user_info["id"] = data.get("id")
-    user_info["picture"] = data.get("pictureUrl")
-    user_info["name"] = data.get("firstName") + " " + data.get("lastName")
+    user_info["id"] = data.get("id", "")
+    user_info["picture"] = data.get("pictureUrl", "")
+    user_info["name"] = data.get("firstName", "") + " " + data.get("lastName", "")
     user_info["data"] = data
     return user_info
